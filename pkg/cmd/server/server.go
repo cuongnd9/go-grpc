@@ -5,7 +5,7 @@ import (
 	"database/sql"
 	"fmt"
 	"github.com/103cuong/go_grpc/pkg/protocol/grpc"
-	"github.com/103cuong/go_grpc/pkg/service/v1"
+	"github.com/103cuong/go_grpc/pkg/service"
 	_ "github.com/go-sql-driver/mysql"
 )
 
@@ -18,7 +18,7 @@ func RunServer() error {
 	}
 	defer db.Close()
 
-	v1API := v1.NewToDoServiceServer(db)
+	v1API := service.NewToDoServiceServer(db)
 
 	return grpc.RunServer(ctx, v1API, "50000")
 }
