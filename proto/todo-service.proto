@@ -1,8 +1,10 @@
 syntax = "proto3";
 
-import "todo-message.proto";
+option go_package = "github.com/cuongnd9/go-grpc";
 
 package TodoService;
+
+import "todo-message.proto";
 
 service ToDoService {
   rpc Create (CreateRequest) returns (CreateResponse) {}

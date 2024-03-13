@@ -1,8 +1,10 @@
-package grpc
+package protocol
 
 import (
 	"context"
-	v1 "github.com/cuongnd9/go-grpc/pkg/pb"
+	"database/sql"
+	pb "github.com/cuongnd9/go-grpc/pkg/pb"
+	"github.com/cuongnd9/go-grpc/pkg/service"
 	"google.golang.org/grpc"
 	"log"
 	"net"
@@ -10,7 +12,7 @@ import (
 	"os/signal"
 )
 
-func RunServer(ctx context.Context, v1API v1.ToDoServiceServer, port string) error {
+func RunGRPC(ctx context.Context, db *sql.DB, port string) error {
 	listen, err := net.Listen("tcp", ":"+port)
 	if err != nil {
 		return err
@@ -18,7 +20,10 @@ func RunServer(ctx context.Context, v1API v1.ToDoServiceServer, port string) err
 
 	// register service
 	server := grpc.NewServer()
-	v1.RegisterToDoServiceServer(server, v1API)
+
+	todoService := service.NewToDoServiceServer(db)
+
+	pb.RegisterToDoServiceServer(server, todoService)
 
 	// graceful shutdown
 	c := make(chan os.Signal, 1)
