@@ -83,7 +83,7 @@ func (c *toDoServiceClient) ReadAll(ctx context.Context, in *ReadAllRequest, opt
 }
 
 // ToDoServiceServer is the server API for ToDoService service.
-// All implementations must embed UnimplementedToDoServiceServer
+// All implementations should embed UnimplementedToDoServiceServer
 // for forward compatibility
 type ToDoServiceServer interface {
 	Create(context.Context, *CreateRequest) (*CreateResponse, error)
@@ -91,10 +91,9 @@ type ToDoServiceServer interface {
 	Update(context.Context, *UpdateRequest) (*UpdateResponse, error)
 	Delete(context.Context, *DeleteRequest) (*DeleteResponse, error)
 	ReadAll(context.Context, *ReadAllRequest) (*ReadAllResponse, error)
-	mustEmbedUnimplementedToDoServiceServer()
 }
 
-// UnimplementedToDoServiceServer must be embedded to have forward compatible implementations.
+// UnimplementedToDoServiceServer should be embedded to have forward compatible implementations.
 type UnimplementedToDoServiceServer struct {
 }
 
@@ -113,7 +112,6 @@ func (UnimplementedToDoServiceServer) Delete(context.Context, *DeleteRequest) (*
 func (UnimplementedToDoServiceServer) ReadAll(context.Context, *ReadAllRequest) (*ReadAllResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method ReadAll not implemented")
 }
-func (UnimplementedToDoServiceServer) mustEmbedUnimplementedToDoServiceServer() {}
 
 // UnsafeToDoServiceServer may be embedded to opt out of forward compatibility for this service.
 // Use of this interface is not recommended, as added methods to ToDoServiceServer will

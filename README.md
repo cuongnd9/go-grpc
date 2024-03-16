@@ -47,8 +47,8 @@ The sql/ directory contains SQL scripts, particularly release notes related to d
 ```shell script
 brew install protobuf
 protoc --version
-go install google.golang.org/protobuf/cmd/protoc-gen-go@v1.28
-go install google.golang.org/grpc/cmd/protoc-gen-go-grpc@v1.2
+go install google.golang.org/protobuf/cmd/protoc-gen-go@latest
+go install google.golang.org/grpc/cmd/protoc-gen-go-grpc@latest
 ```
 
 #### .zshrc or.bashrc
@@ -75,7 +75,7 @@ docker run -it --name database -p 3306:3306 -e MYSQL_ROOT_PASSWORD=cuongnguyenpo
 ```shell script
 protoc --proto_path=proto \
     --go_out=api --go_opt=paths=source_relative \
-    --go-grpc_out=api --go-grpc_opt=paths=source_relative \
+    --go-grpc_out=api --go-grpc_opt=paths=source_relative,require_unimplemented_servers=false \
     proto/*.proto
 ```
 

@@ -2,14 +2,12 @@ package main
 
 import (
 	"context"
-	api "github.com/cuongnd9/go-grpc/api"
+	"github.com/cuongnd9/go-grpc/api"
 	"google.golang.org/grpc"
 	"log"
 	"syreclabs.com/go/faker"
 	"time"
 )
-
-const apiVersion = "api"
 
 func main() {
 	conn, err := grpc.Dial(":50000", grpc.WithInsecure())
@@ -28,7 +26,6 @@ func main() {
 
 	// Create
 	req1 := api.CreateRequest{
-		Api: apiVersion,
 		ToDo: &api.ToDo{
 			Title:       faker.Name().Title(),
 			Description: faker.Name().String(),
@@ -44,8 +41,7 @@ func main() {
 
 	// Read
 	req2 := api.ReadRequest{
-		Api: apiVersion,
-		Id:  id,
+		Id: id,
 	}
 	res2, err := client.Read(ctx, &req2)
 	if err != nil {
@@ -55,7 +51,6 @@ func main() {
 
 	// Update
 	req3 := api.UpdateRequest{
-		Api: apiVersion,
 		ToDo: &api.ToDo{
 			Id:          res2.ToDo.Id,
 			Title:       faker.Name().Title(),
@@ -69,9 +64,7 @@ func main() {
 	log.Printf("Update result: <%+v>\n\n", res3)
 
 	// ReadAll
-	req4 := api.ReadAllRequest{
-		Api: apiVersion,
-	}
+	req4 := api.ReadAllRequest{}
 	res4, err := client.ReadAll(ctx, &req4)
 	if err != nil {
 		log.Fatalf("ReadAll failed: %v", err)
@@ -80,8 +73,7 @@ func main() {
 
 	// Delete
 	req5 := api.DeleteRequest{
-		Api: apiVersion,
-		Id:  id,
+		Id: id,
 	}
 	res5, err := client.Delete(ctx, &req5)
 	if err != nil {

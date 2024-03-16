@@ -6,7 +6,7 @@ mysql:
 gen-proto:
 	protoc --proto_path=proto \
 	    --go_out=api --go_opt=paths=source_relative \
-	    --go-grpc_out=api --go-grpc_opt=paths=source_relative \
+	    --go-grpc_out=api --go-grpc_opt=paths=source_relative,require_unimplemented_servers=false \
 	    proto/*.proto
 
 run-server:
