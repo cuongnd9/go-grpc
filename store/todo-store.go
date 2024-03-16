@@ -55,7 +55,7 @@ func (s *ToDoStore) Create(ctx context.Context, req *api.CreateRequest) (*api.Cr
 	}
 
 	return &api.CreateResponse{
-		Id: id,
+		Id: uint32(id),
 	}, nil
 }
 
@@ -124,7 +124,7 @@ func (s *ToDoStore) Update(ctx context.Context, req *api.UpdateRequest) (*api.Up
 	}
 
 	return &api.UpdateResponse{
-		Updated: rows,
+		Updated: uint32(rows),
 	}, nil
 }
 
@@ -153,7 +153,7 @@ func (s *ToDoStore) Delete(ctx context.Context, req *api.DeleteRequest) (*api.De
 	}
 
 	return &api.DeleteResponse{
-		Deleted: rows,
+		Deleted: uint32(rows),
 	}, nil
 }
 

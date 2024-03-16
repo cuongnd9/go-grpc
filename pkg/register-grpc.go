@@ -3,7 +3,8 @@ package pkg
 import (
 	"context"
 	"database/sql"
-	api "github.com/cuongnd9/go-grpc/api"
+	"github.com/cuongnd9/go-grpc/api"
+	"github.com/cuongnd9/go-grpc/module/todo"
 	"github.com/cuongnd9/go-grpc/store"
 	"google.golang.org/grpc"
 	"log"
@@ -18,10 +19,13 @@ func RunGRPC(ctx context.Context, db *sql.DB, port string) error {
 		return err
 	}
 
+	// register store
+	globalStore := store.NewGlobalStore(db)
+
 	// register service
 	server := grpc.NewServer()
 
-	todoService := store.NewToDoServiceServer(db)
+	todoService := module.NewToDoService(globalStore)
 
 	api.RegisterToDoServiceServer(server, todoService)
 

@@ -1,4 +1,4 @@
-package service
+package module
 
 import (
 	"context"
@@ -7,15 +7,15 @@ import (
 )
 
 type ToDoService struct {
-	todoStore *store.ToDoStore
+	store *store.GlobalStore
 }
 
-func NewToDoService(todoStore *store.ToDoStore) *ToDoService {
-	return &ToDoService{todoStore: todoStore}
+func NewToDoService(store *store.GlobalStore) *ToDoService {
+	return &ToDoService{store: store}
 }
 
 func (s *ToDoService) Create(ctx context.Context, req *api.CreateRequest) (*api.CreateResponse, error) {
-	newTodo, err := s.todoStore.Create(ctx, req)
+	newTodo, err := s.store.TodoStore.Create(ctx, req)
 	if err != nil {
 		return nil, err
 	}
@@ -26,7 +26,7 @@ func (s *ToDoService) Create(ctx context.Context, req *api.CreateRequest) (*api.
 }
 
 func (s *ToDoService) Read(ctx context.Context, req *api.ReadRequest) (*api.ReadResponse, error) {
-	readResp, err := s.todoStore.Read(ctx, req)
+	readResp, err := s.store.TodoStore.Read(ctx, req)
 	if err != nil {
 		return nil, err
 	}
@@ -37,7 +37,7 @@ func (s *ToDoService) Read(ctx context.Context, req *api.ReadRequest) (*api.Read
 }
 
 func (s *ToDoService) Update(ctx context.Context, req *api.UpdateRequest) (*api.UpdateResponse, error) {
-	updateResp, err := s.todoStore.Update(ctx, req)
+	updateResp, err := s.store.TodoStore.Update(ctx, req)
 	if err != nil {
 		return nil, err
 	}
@@ -48,7 +48,7 @@ func (s *ToDoService) Update(ctx context.Context, req *api.UpdateRequest) (*api.
 }
 
 func (s *ToDoService) Delete(ctx context.Context, req *api.DeleteRequest) (*api.DeleteResponse, error) {
-	deleteResp, err := s.todoStore.Delete(ctx, req)
+	deleteResp, err := s.store.TodoStore.Delete(ctx, req)
 	if err != nil {
 		return nil, err
 	}
@@ -59,7 +59,7 @@ func (s *ToDoService) Delete(ctx context.Context, req *api.DeleteRequest) (*api.
 }
 
 func (s *ToDoService) ReadAll(ctx context.Context, req *api.ReadAllRequest) (*api.ReadAllResponse, error) {
-	readAllResp, err := s.todoStore.ReadAll(ctx, req)
+	readAllResp, err := s.store.TodoStore.ReadAll(ctx, req)
 	if err != nil {
 		return nil, err
 	}
