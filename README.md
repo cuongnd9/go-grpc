@@ -67,7 +67,7 @@ go mod vendor
 ### 3. MySQL
 
 ```shell script
-docker run -it --name database -p 3306:3306 -e MYSQL_ROOT_PASSWORD=cuongnguyenpo -e MYSQL_DATABASE=cuongnguyenpo mysql:latest
+docker run -it --name database -p 3306:3306 -e MYSQL_ROOT_PASSWORD=cuongpo -e MYSQL_DATABASE=cuongpo mysql:latest
 ```
 
 ### 4. Generate Go's protobuf code
