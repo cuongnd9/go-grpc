@@ -2,6 +2,42 @@
 
 Go 🤝 gRPC
 
+# 🧑‍💻 Project Structure
+
+### api/
+
+This directory contains gRPC definitions.
+
+### cmd/
+
+The cmd/ directory contains the main applications of the project. In this case, there are client and server directories.
+
+### config/
+
+The config/ directory holds configuration files  such as environment or settings.
+
+### model/
+
+The model/ directory contains database entities.
+
+### module/
+
+The module/ directory is collections of domain logic or features.
+
+### pkg/
+
+The pkg/ directory typically houses reusable packages or libraries that can be used across the project or potentially shared with other projects.
+
+### proto/
+
+This directory contains Protobuf files, which are used for defining gRPC services and messages.
+
+### sql/
+
+The sql/ directory contains SQL scripts, particularly release notes related to database schema changes or updates.
+
+# 🐧 Commands
+
 ### 1. Local Machine
 
 ```shell script
@@ -30,25 +66,12 @@ go mod vendor
 docker run -it --name database -p 3306:3306 -e MYSQL_ROOT_PASSWORD=cuongnguyenpo -e MYSQL_DATABASE=cuongnguyenpo mysql:latest
 ```
 
-*Create table if not exist*
-
-```sql
-CREATE TABLE `todo` (
-    `id` bigint(20) NOT NULL AUTO_INCREMENT,
-    `title` varchar(200) DEFAULT NULL,
-    `description` varchar(1024) DEFAULT NULL,
-    `reminder` timestamp NULL DEFAULT NULL,
-    PRIMARY KEY (`id`),
-    UNIQUE (`id`)
-);
-```
-
 ### 4. Generate Go's protobuf code
 
 ```shell script
 protoc --proto_path=proto \
-    --go_out=pkg/pb --go_opt=paths=source_relative \
-    --go-grpc_out=pkg/pb --go-grpc_opt=paths=source_relative \
+    --go_out=api --go_opt=paths=source_relative \
+    --go-grpc_out=api --go-grpc_opt=paths=source_relative \
     proto/*.proto
 ```
 
@@ -64,6 +87,6 @@ cd cmd/server && go run main.go
 cd cmd/client && go run main.go
 ```
 
-### license
+## License
 
 MIT © [Cuong Nguyen](https://github.com/cuongnd9/) 2024

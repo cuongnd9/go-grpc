@@ -4,7 +4,7 @@
 // - protoc             v4.25.3
 // source: todo-service.proto
 
-package go_grpc
+package pb
 
 import (
 	context "context"

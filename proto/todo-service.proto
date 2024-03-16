@@ -1,6 +1,6 @@
 syntax = "proto3";
 
-option go_package = "github.com/cuongnd9/go-grpc";
+option go_package = "github.com/cuongnd9/go-grpc/pb";
 
 package TodoService;
 

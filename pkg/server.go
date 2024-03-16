@@ -4,7 +4,6 @@ import (
 	"context"
 	"database/sql"
 	"fmt"
-	"github.com/cuongnd9/go-grpc/pkg/protocol"
 	_ "github.com/go-sql-driver/mysql"
 )
 
@@ -17,5 +16,5 @@ func RunServer() error {
 	}
 	defer db.Close()
 
-	return protocol.RunGRPC(ctx, db, "50000")
+	return RunGRPC(ctx, db, "50000")
 }

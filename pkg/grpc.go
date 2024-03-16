@@ -1,10 +1,10 @@
-package protocol
+package pkg
 
 import (
 	"context"
 	"database/sql"
-	pb "github.com/cuongnd9/go-grpc/pkg/pb"
-	"github.com/cuongnd9/go-grpc/pkg/service"
+	pb "github.com/cuongnd9/go-grpc/internal/pb"
+	"github.com/cuongnd9/go-grpc/module/todo"
 	"google.golang.org/grpc"
 	"log"
 	"net"
@@ -21,7 +21,7 @@ func RunGRPC(ctx context.Context, db *sql.DB, port string) error {
 	// register service
 	server := grpc.NewServer()
 
-	todoService := service.NewToDoServiceServer(db)
+	todoService := todo.NewToDoServiceServer(db)
 
 	pb.RegisterToDoServiceServer(server, todoService)
 

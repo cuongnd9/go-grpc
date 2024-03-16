@@ -2,7 +2,7 @@ package main
 
 import (
 	"context"
-	pb "github.com/cuongnd9/go-grpc/pkg/pb"
+	pb "github.com/cuongnd9/go-grpc/internal/pb"
 	"google.golang.org/grpc"
 	"log"
 	"syreclabs.com/go/faker"

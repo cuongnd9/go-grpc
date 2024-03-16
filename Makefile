@@ -5,12 +5,12 @@ mysql:
 
 gen-proto:
 	protoc --proto_path=proto \
-	    --go_out=pkg/pb --go_opt=paths=source_relative \
-	    --go-grpc_out=pkg/pb --go-grpc_opt=paths=source_relative \
+	    --go_out=api --go_opt=paths=source_relative \
+	    --go-grpc_out=api --go-grpc_opt=paths=source_relative \
 	    proto/*.proto
 
 run-server:
-	go run cmd/server.go
+	go run cmd/server/main.go
 
 run-client:
-	go run cmd/client.go
+	go run cmd/client/main.go
