@@ -1,4 +1,4 @@
-package todo
+package store
 
 import (
 	"context"
@@ -8,18 +8,18 @@ import (
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 
-	pb "github.com/cuongnd9/go-grpc/pkg/pb"
+	"github.com/cuongnd9/go-grpc/api"
 )
 
-type ToDoServiceServer struct {
+type ToDoStore struct {
 	db *sql.DB
 }
 
-func NewToDoServiceServer(db *sql.DB) *ToDoServiceServer {
-	return &ToDoServiceServer{db: db}
+func NewToDoStore(db *sql.DB) *ToDoStore {
+	return &ToDoStore{db: db}
 }
 
-func (s *ToDoServiceServer) connect(ctx context.Context) (*sql.Conn, error) {
+func (s *ToDoStore) connect(ctx context.Context) (*sql.Conn, error) {
 	db, err := s.db.Conn(ctx)
 	if err != nil {
 		return nil, status.Error(codes.Unknown, "database connection failed")
@@ -27,7 +27,7 @@ func (s *ToDoServiceServer) connect(ctx context.Context) (*sql.Conn, error) {
 	return db, nil
 }
 
-func (s *ToDoServiceServer) Create(ctx context.Context, req *pb.CreateRequest) (*pb.CreateResponse, error) {
+func (s *ToDoStore) Create(ctx context.Context, req *api.CreateRequest) (*api.CreateResponse, error) {
 
 	// database connection
 	db, err := s.connect(ctx)
@@ -54,12 +54,12 @@ func (s *ToDoServiceServer) Create(ctx context.Context, req *pb.CreateRequest) (
 		return nil, status.Error(codes.Unknown, "getting last insert id failed")
 	}
 
-	return &pb.CreateResponse{
+	return &api.CreateResponse{
 		Id: id,
 	}, nil
 }
 
-func (s *ToDoServiceServer) Read(ctx context.Context, req *pb.ReadRequest) (*pb.ReadResponse, error) {
+func (s *ToDoStore) Read(ctx context.Context, req *api.ReadRequest) (*api.ReadResponse, error) {
 	// database connection
 	db, err := s.connect(ctx)
 	if err != nil {
@@ -83,7 +83,7 @@ func (s *ToDoServiceServer) Read(ctx context.Context, req *pb.ReadRequest) (*pb.
 		return nil, status.Error(codes.NotFound, "not found ToDo with ID")
 	}
 
-	var todo pb.ToDo
+	var todo api.ToDo
 	var reminder time.Time
 	if err := rows.Scan(&todo.Id, &todo.Title, &todo.Description, &reminder); err != nil {
 		return nil, status.Errorf(codes.Unknown, "scanning data from Todo failed: %v", err)
@@ -93,12 +93,12 @@ func (s *ToDoServiceServer) Read(ctx context.Context, req *pb.ReadRequest) (*pb.
 		return nil, status.Error(codes.Unknown, "founding multiple ToDo with ID")
 	}
 
-	return &pb.ReadResponse{
+	return &api.ReadResponse{
 		ToDo: &todo,
 	}, nil
 }
 
-func (s *ToDoServiceServer) Update(ctx context.Context, req *pb.UpdateRequest) (*pb.UpdateResponse, error) {
+func (s *ToDoStore) Update(ctx context.Context, req *api.UpdateRequest) (*api.UpdateResponse, error) {
 	// database connection
 	db, err := s.connect(ctx)
 	if err != nil {
@@ -123,12 +123,12 @@ func (s *ToDoServiceServer) Update(ctx context.Context, req *pb.UpdateRequest) (
 		return nil, status.Error(codes.NotFound, "ToDo with ID not found")
 	}
 
-	return &pb.UpdateResponse{
+	return &api.UpdateResponse{
 		Updated: rows,
 	}, nil
 }
 
-func (s *ToDoServiceServer) Delete(ctx context.Context, req *pb.DeleteRequest) (*pb.DeleteResponse, error) {
+func (s *ToDoStore) Delete(ctx context.Context, req *api.DeleteRequest) (*api.DeleteResponse, error) {
 	// database connection
 	db, err := s.connect(ctx)
 	if err != nil {
@@ -152,12 +152,12 @@ func (s *ToDoServiceServer) Delete(ctx context.Context, req *pb.DeleteRequest) (
 		return nil, status.Error(codes.NotFound, "ToDo with ID not found")
 	}
 
-	return &pb.DeleteResponse{
+	return &api.DeleteResponse{
 		Deleted: rows,
 	}, nil
 }
 
-func (s *ToDoServiceServer) ReadAll(ctx context.Context, req *pb.ReadAllRequest) (*pb.ReadAllResponse, error) {
+func (s *ToDoStore) ReadAll(ctx context.Context, req *api.ReadAllRequest) (*api.ReadAllResponse, error) {
 	// database connection
 	db, err := s.connect(ctx)
 	if err != nil {
@@ -174,9 +174,9 @@ func (s *ToDoServiceServer) ReadAll(ctx context.Context, req *pb.ReadAllRequest)
 	defer rows.Close()
 
 	var reminder time.Time
-	var list []*pb.ToDo
+	var list []*api.ToDo
 	for rows.Next() {
-		todo := new(pb.ToDo)
+		todo := new(api.ToDo)
 		if err := rows.Scan(&todo.Id, &todo.Title, &todo.Description, &reminder); err != nil {
 			return nil, status.Errorf(codes.Unknown, "scanning data from Todo failed: %v", err)
 		}
@@ -187,7 +187,7 @@ func (s *ToDoServiceServer) ReadAll(ctx context.Context, req *pb.ReadAllRequest)
 		return nil, status.Error(codes.Unknown, "selecting data failed")
 	}
 
-	return &pb.ReadAllResponse{
+	return &api.ReadAllResponse{
 		ToDos: list,
 	}, nil
 }

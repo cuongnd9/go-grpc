@@ -1,8 +1,8 @@
 syntax = "proto3";
 
-option go_package = "github.com/cuongnd9/go-grpc/pb";
+option go_package = "github.com/cuongnd9/go-grpc/api";
 
-package TodoService;
+package Todo;
 
 import "todo-message.proto";
 

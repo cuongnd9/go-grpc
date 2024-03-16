@@ -20,6 +20,10 @@ The config/ directory holds configuration files  such as environment or settings
 
 The model/ directory contains database entities.
 
+### store/
+
+The store/ directory contains sql logic for models. Eg: user store logics like queryProfile, editProfile. And it's related user model.
+
 ### module/
 
 The module/ directory is collections of domain logic or features.

@@ -2,14 +2,14 @@ package main
 
 import (
 	"context"
-	pb "github.com/cuongnd9/go-grpc/internal/pb"
+	api "github.com/cuongnd9/go-grpc/api"
 	"google.golang.org/grpc"
 	"log"
 	"syreclabs.com/go/faker"
 	"time"
 )
 
-const apiVersion = "pb"
+const apiVersion = "api"
 
 func main() {
 	conn, err := grpc.Dial(":50000", grpc.WithInsecure())
@@ -18,7 +18,7 @@ func main() {
 	}
 	defer conn.Close()
 
-	client := pb.NewToDoServiceClient(conn)
+	client := api.NewToDoServiceClient(conn)
 
 	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
 	defer cancel()
@@ -27,9 +27,9 @@ func main() {
 	t.Format(time.RFC3339Nano)
 
 	// Create
-	req1 := pb.CreateRequest{
+	req1 := api.CreateRequest{
 		Api: apiVersion,
-		ToDo: &pb.ToDo{
+		ToDo: &api.ToDo{
 			Title:       faker.Name().Title(),
 			Description: faker.Name().String(),
 		},
@@ -43,7 +43,7 @@ func main() {
 	id := res1.Id
 
 	// Read
-	req2 := pb.ReadRequest{
+	req2 := api.ReadRequest{
 		Api: apiVersion,
 		Id:  id,
 	}
@@ -54,9 +54,9 @@ func main() {
 	log.Printf("Read result: <%+v>\n\n", res2)
 
 	// Update
-	req3 := pb.UpdateRequest{
+	req3 := api.UpdateRequest{
 		Api: apiVersion,
-		ToDo: &pb.ToDo{
+		ToDo: &api.ToDo{
 			Id:          res2.ToDo.Id,
 			Title:       faker.Name().Title(),
 			Description: faker.Name().String(),
@@ -69,7 +69,7 @@ func main() {
 	log.Printf("Update result: <%+v>\n\n", res3)
 
 	// ReadAll
-	req4 := pb.ReadAllRequest{
+	req4 := api.ReadAllRequest{
 		Api: apiVersion,
 	}
 	res4, err := client.ReadAll(ctx, &req4)
@@ -79,7 +79,7 @@ func main() {
 	log.Printf("ReadAll result: <%+v>\n\n", res4)
 
 	// Delete
-	req5 := pb.DeleteRequest{
+	req5 := api.DeleteRequest{
 		Api: apiVersion,
 		Id:  id,
 	}
