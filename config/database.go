@@ -10,30 +10,30 @@ import (
 type DBConfig struct {
 	Host     string `default:"0.0.0.0"`
 	Port     string `default:"3036"`
-	User     string `default:"root"`
+	User     string `default:"cuongpo"`
 	DBName   string `default:"cuongpo"`
-	Password string `default:"cuongpo"`
+	Password string `default:"cuongpo998"`
 }
 
 func BuildDBConfig() *DBConfig {
 	dbConfig := DBConfig{
-		Host:     os.Getenv("PG_HOST"),
-		Port:     os.Getenv("PG_PORT"),
-		User:     os.Getenv("PG_USER"),
-		DBName:   os.Getenv("PG_DBNAME"),
-		Password: os.Getenv("PG_PASSWORD"),
+		Host:     os.Getenv("DB_HOST"),
+		Port:     os.Getenv("DB_PORT"),
+		User:     os.Getenv("DB_USER"),
+		DBName:   os.Getenv("DB_DBNAME"),
+		Password: os.Getenv("DB_PASSWORD"),
 	}
 	defaults.SetDefaults(&dbConfig)
 	return &dbConfig
 }
 
-func BuildDBConn() string {
+func BuildDSN() string {
 	dbConfig := BuildDBConfig()
-	return fmt.Sprintf("host=%s user=%s password=%s dbname=%s port=%s sslmode=disable",
-		dbConfig.Host,
+	return fmt.Sprintf("%s:%s@tcp(%s:%s)/%s",
 		dbConfig.User,
 		dbConfig.Password,
-		dbConfig.DBName,
+		dbConfig.Host,
 		dbConfig.Port,
+		dbConfig.DBName,
 	)
 }

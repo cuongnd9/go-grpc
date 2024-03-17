@@ -2,14 +2,13 @@ package model
 
 import (
 	"gorm.io/gorm"
-	"time"
 )
 
 type Todo struct {
 	gorm.Model
-	Title       string     `gorm:"column:title"`
-	Description string     `gorm:"column:description"`
-	Reminder    *time.Time `gorm:"column:reminder"`
+	ID          uint32 `gorm:"column:id"`
+	Title       string `gorm:"column:title"`
+	Description string `gorm:"column:description"`
 }
 
 // TableName get table name

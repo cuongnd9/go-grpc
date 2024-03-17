@@ -2,18 +2,18 @@ package pkg
 
 import (
 	"context"
-	"database/sql"
 	"github.com/cuongnd9/go-grpc/api"
 	"github.com/cuongnd9/go-grpc/module/todo"
 	"github.com/cuongnd9/go-grpc/store"
 	"google.golang.org/grpc"
+	"gorm.io/gorm"
 	"log"
 	"net"
 	"os"
 	"os/signal"
 )
 
-func RunGRPC(ctx context.Context, db *sql.DB, port string) error {
+func RunGRPC(ctx context.Context, db *gorm.DB, port string) error {
 	listen, err := net.Listen("tcp", ":"+port)
 	if err != nil {
 		return err

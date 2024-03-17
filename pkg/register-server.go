@@ -2,19 +2,20 @@ package pkg
 
 import (
 	"context"
-	"database/sql"
-	"fmt"
-	_ "github.com/go-sql-driver/mysql"
+	"github.com/cuongnd9/go-grpc/config"
+	"gorm.io/driver/mysql"
+	"gorm.io/gorm"
 )
 
 func RunServer() error {
 	ctx := context.Background()
 
-	db, err := sql.Open("mysql", "root:cuongnguyenpo@/cuongnguyenpo?parseTime=true")
+	db, err := gorm.Open(mysql.New(mysql.Config{
+		DSN: config.BuildDSN(),
+	}), &gorm.Config{})
 	if err != nil {
-		return fmt.Errorf("opening database failed")
+		panic("failed to connect database")
 	}
-	defer db.Close()
 
 	return RunGRPC(ctx, db, "50000")
 }
